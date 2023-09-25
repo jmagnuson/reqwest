@@ -228,6 +228,15 @@ impl RequestBuilder {
         self
     }
 
+    fn header_typed<H>(mut self, header: H) -> RequestBuilder
+        where H: headers::Header,
+    {
+        if let Ok(ref mut req) = self.request {
+            <HeaderMap as headers::HeaderMapExt>::typed_insert(req.headers_mut(), header);
+        }
+        self
+    }
+
     /// Add a set of Headers to the existing ones on this Request.
     ///
     /// The headers will be merged in to any already set.
